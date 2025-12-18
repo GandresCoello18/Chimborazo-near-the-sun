@@ -8,21 +8,24 @@
   let isDragging = false;
   let lastMouseX = 0;
   let lastMouseY = 0;
-  let selectedMountain: 'chimborazo' | 'everest' | null = null;
   let showRadialLines = false;
-  let showComparison = false;
-  let showSunScene = false;
   let autoDemoMode = true;
-  let demoStep = 0;
   
-  // Convert lat/lon to CSS 3D position
-  function latLonToCSS3D(lat: number, lon: number, radius: number = 100): { x: number; y: number; z: number } {
+  // Convert lat/lon to CSS 3D position on an oblate spheroid
+  function latLonToCSS3D(lat: number, lon: number, baseRadius: number = 100): { x: number; y: number; z: number } {
+    // Calculate radius at this latitude (accounting for Earth's oblateness)
+    const latRad = lat * (Math.PI / 180);
+    const flattening = 0.00335; // Earth's actual flattening
+    const radiusAtLat = baseRadius * (1 - flattening * Math.sin(latRad) * Math.sin(latRad));
+    
+    // Convert to spherical coordinates
     const phi = (90 - lat) * (Math.PI / 180);
     const theta = (lon + 180) * (Math.PI / 180);
     
-    const x = radius * Math.sin(phi) * Math.cos(theta);
-    const y = radius * Math.cos(phi);
-    const z = radius * Math.sin(phi) * Math.sin(theta);
+    // Calculate 3D position with adjusted radius
+    const x = radiusAtLat * Math.sin(phi) * Math.cos(theta);
+    const y = radiusAtLat * Math.cos(phi);
+    const z = radiusAtLat * Math.sin(phi) * Math.sin(theta);
     
     return { x, y, z };
   }
@@ -73,6 +76,7 @@
     lastMouseY = e.clientY;
     
     updateRotation();
+    updateLabelOrientation();
   }
   
   function handleMouseUp() {
@@ -82,6 +86,49 @@
   function updateRotation() {
     if (earthElement) {
       earthElement.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
+      
+      // Actualizar orientación de etiquetas basado en la rotación
+      updateLabelOrientation();
+    }
+  }
+  
+  function updateLabelOrientation() {
+    // Calcular la posición 3D después de la rotación para determinar si está en el lado opuesto
+    const everestContainer = document.querySelector('.everest') as HTMLElement;
+    
+    if (everestContainer) {
+      // Calcular la rotación en radianes
+      const rotationYRad = (rotationY * Math.PI) / 180;
+      
+      // Calcular la posición después de la rotación Y
+      // La rotación Y gira alrededor del eje vertical (eje Y)
+      const cosY = Math.cos(rotationYRad);
+      const sinY = Math.sin(rotationYRad);
+      
+      // Rotar la posición original de Everest alrededor del eje Y
+      // Para rotación Y: x' = x*cos(θ) - z*sin(θ), z' = x*sin(θ) + z*cos(θ)
+      const rotatedZ = everestPos.x * sinY + everestPos.z * cosY;
+      
+      const everestLabel = everestContainer.querySelector('.volcano-label') as HTMLElement;
+      const everestBadge = everestContainer.querySelector('.distance-badge') as HTMLElement;
+      
+      if (everestLabel && everestBadge) {
+        // En CSS 3D, cuando un elemento está en el lado opuesto (z negativo después de rotación),
+        // se ve al revés. Necesitamos invertir el texto para corregirlo.
+        // La posición inicial de Everest tiene z negativo, así que probamos ambas condiciones
+        // Si z rotado es negativo, está detrás, puede necesitar inversión
+        // Si z rotado es positivo, está al frente, normal
+        // Probamos invirtiendo la lógica: si z > 0, invertir (porque CSS ya lo muestra al revés)
+        const shouldInvert = rotatedZ > 0;
+        
+        if (shouldInvert) {
+          everestLabel.style.transform = 'translateX(-50%) scaleX(-1)';
+          everestBadge.style.transform = 'translateX(-50%) scaleX(-1)';
+        } else {
+          everestLabel.style.transform = 'translateX(-50%) scaleX(1)';
+          everestBadge.style.transform = 'translateX(-50%) scaleX(1)';
+        }
+      }
     }
   }
   
@@ -104,37 +151,27 @@
       e.preventDefault();
       rotationY -= 5;
       updateRotation();
+      updateLabelOrientation();
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
       rotationY += 5;
       updateRotation();
+      updateLabelOrientation();
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       rotationX -= 5;
       updateRotation();
+      updateLabelOrientation();
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       rotationX += 5;
       updateRotation();
+      updateLabelOrientation();
     }
   }
   
   function selectMountain(mountain: 'chimborazo' | 'everest') {
-    selectedMountain = selectedMountain === mountain ? null : mountain;
-    if (selectedMountain) {
-      showRadialLines = true;
-      showComparison = true;
-      showSunScene = true;
-    } else {
-      showRadialLines = false;
-      showComparison = false;
-      showSunScene = false;
-    }
-  }
-  
-  function showSunComparison() {
-    showSunScene = true;
-    showComparison = true;
+    showRadialLines = !showRadialLines;
   }
   
   // Auto demo sequence
@@ -150,34 +187,15 @@
       }
     }, 50);
     
-    // Auto demo sequence
-    if (autoDemoMode) {
-      const demoInterval = setInterval(() => {
-        demoStep++;
-        if (demoStep === 1) {
-          // Step 1: Show Chimborazo
-          setTimeout(() => {
-            selectMountain('chimborazo');
-          }, 2000);
-        } else if (demoStep === 2) {
-          // Step 2: Show comparison
-          setTimeout(() => {
-            showSunScene = true;
-          }, 4000);
-        } else if (demoStep >= 3) {
-          clearInterval(demoInterval);
-        }
-      }, 6000);
-      
-      return () => {
-        clearInterval(rotateInterval);
-        clearInterval(demoInterval);
-        window.removeEventListener('keydown', handleKeyDown);
-      };
-    }
+    // Actualizar orientación de etiquetas periódicamente
+    const labelUpdateInterval = setInterval(() => {
+      updateLabelOrientation();
+    }, 100);
+    
     
     return () => {
       clearInterval(rotateInterval);
+      clearInterval(labelUpdateInterval);
       window.removeEventListener('keydown', handleKeyDown);
     };
   });
@@ -195,47 +213,15 @@
   on:wheel={handleWheel}
   on:keydown={handleKeyDown}>
   
-  <!-- Sun Scene (shown when comparing distances) -->
-  {#if showSunScene}
-    <div class="sun-scene">
-      <div class="sun">
-        <div class="sun-core"></div>
-        <div class="sun-glow"></div>
-      </div>
-      
-      <!-- Earth in sun scene -->
-      <div class="earth-in-sun-scene">
-        <div class="earth-mini"></div>
-        
-        <!-- Chimborazo line to sun -->
-        <div class="distance-line chimborazo-sun-line">
-          <div class="line-path"></div>
-          <div class="line-label chimborazo-label">
-            <span>Chimborazo</span>
-            <span class="distance-value">{(149600000 - chimborazoDistance).toFixed(0)} km del Sol</span>
-          </div>
-        </div>
-        
-        <!-- Everest line to sun -->
-        <div class="distance-line everest-sun-line">
-          <div class="line-path"></div>
-          <div class="line-label everest-label">
-            <span>Everest</span>
-            <span class="distance-value">{(149600000 - everestDistance).toFixed(0)} km del Sol</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="sun-scene-explanation">
-        <h3>Distancia al Sol</h3>
-        <p>Chimborazo está <strong>{((everestDistance - chimborazoDistance) * 1000).toFixed(0)} metros más cerca del Sol</strong> que el Everest</p>
-        <button class="close-sun-scene" on:click={() => { showSunScene = false; }}>Cerrar</button>
-      </div>
-    </div>
-  {/if}
-  
   <!-- Main Earth Scene -->
   <div class="scene-3d">
+    <!-- Sun -->
+    <div class="sun">
+      <div class="sun-core"></div>
+      <div class="sun-glow"></div>
+      <div class="sun-label">☀️ Sol</div>
+    </div>
+    
     <div class="earth" bind:this={earthElement}>
       <!-- Earth sphere with realistic texture -->
       <div class="earth-sphere">
@@ -329,73 +315,6 @@
     </div>
   </div>
   
-  <!-- Comparison panel -->
-  {#if showComparison}
-    <div class="comparison-panel">
-      <h3>Comparación Visual</h3>
-      <div class="volcano-comparison-visual">
-        <div class="comparison-volcano chimborazo-comp">
-          <div class="comp-volcano-cone" style="height: {chimborazoHeightPx * 0.3}px;"></div>
-          <div class="comp-label">Chimborazo<br/>{CHIMBORAZO.height.toLocaleString()}m</div>
-        </div>
-        <div class="vs-divider">VS</div>
-        <div class="comparison-volcano everest-comp">
-          <div class="comp-volcano-cone" style="height: {everestHeightPx * 0.3}px;"></div>
-          <div class="comp-label">Everest<br/>{EVEREST.height.toLocaleString()}m</div>
-        </div>
-      </div>
-      <div class="distance-comparison">
-        <div class="distance-item">
-          <span class="distance-name">Chimborazo al centro:</span>
-          <span class="distance-number">{chimborazoDistance.toFixed(1)} km</span>
-        </div>
-        <div class="distance-item">
-          <span class="distance-name">Everest al centro:</span>
-          <span class="distance-number">{everestDistance.toFixed(1)} km</span>
-        </div>
-        <div class="difference-highlight">
-          <strong>Diferencia: {((chimborazoDistance - everestDistance) * 1000).toFixed(0)} metros</strong>
-          <p>Chimborazo está más lejos del centro, por lo tanto más cerca del Sol</p>
-        </div>
-      </div>
-      <button class="show-sun-btn" on:click={showSunComparison}>Ver comparación con el Sol</button>
-    </div>
-  {/if}
-  
-  <!-- Info card -->
-  {#if selectedMountain}
-    <div class="info-card">
-      <button class="close-btn" on:click={() => { selectedMountain = null; showRadialLines = false; showComparison = false; showSunScene = false; }} aria-label="Cerrar">×</button>
-      {#if selectedMountain === 'chimborazo'}
-        <h3>🌋 {CHIMBORAZO.name}</h3>
-        <p><strong>Altura:</strong> {CHIMBORAZO.height.toLocaleString()}m</p>
-        <p><strong>Distancia desde el centro:</strong> {chimborazoDistance.toFixed(1)} km</p>
-        <p><strong>Ubicación:</strong> Ecuador (cerca del ecuador)</p>
-        <p class="explanation">
-          Aunque el Everest es más alto, Chimborazo está más cerca del Sol porque está cerca del ecuador, 
-          donde la Tierra tiene un abultamiento debido a su rotación.
-        </p>
-      {:else}
-        <h3>🏔️ {EVEREST.name}</h3>
-        <p><strong>Altura:</strong> {EVEREST.height.toLocaleString()}m</p>
-        <p><strong>Distancia desde el centro:</strong> {everestDistance.toFixed(1)} km</p>
-        <p><strong>Ubicación:</strong> Nepal/Tíbet (lejos del ecuador)</p>
-        <p class="explanation">
-          El Everest es la montaña más alta sobre el nivel del mar, pero no la más cercana al Sol. 
-          Su ubicación lejos del ecuador significa que está sobre una parte de la Tierra más cerca del centro.
-        </p>
-      {/if}
-    </div>
-  {/if}
-  
-  <!-- Educational banner (dismissible) -->
-  <div class="educational-banner">
-    <button class="banner-close-btn" on:click={(e) => { e.currentTarget.parentElement?.remove(); }}>×</button>
-    <h2>¿Por qué Chimborazo está más cerca del Sol?</h2>
-    <p>La Tierra tiene un abultamiento en el ecuador. Chimborazo está cerca del ecuador, por lo que está más lejos del centro de la Tierra y más cerca del Sol que el Everest.</p>
-    <p class="banner-hint">💡 Haz clic en los volcanes para ver la comparación visual</p>
-  </div>
-  
   <div class="instructions">
     <p>🖱️ Arrastra para rotar • 🔍 Rueda del mouse para zoom • 👆 Click en los volcanes</p>
   </div>
@@ -416,163 +335,6 @@
     cursor: grabbing;
   }
   
-  /* Sun Scene */
-  .sun-scene {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.5s ease-out;
-  }
-  
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  .sun {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin-bottom: 100px;
-  }
-  
-  .sun-core {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #fff 0%, #ffd700 40%, #ff8c00 100%);
-    box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 140, 0, 0.6);
-    animation: sunPulse 2s ease-in-out infinite;
-  }
-  
-  @keyframes sunPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 100px rgba(255, 215, 0, 0.8), 0 0 200px rgba(255, 140, 0, 0.6); }
-    50% { transform: scale(1.1); box-shadow: 0 0 150px rgba(255, 215, 0, 1), 0 0 300px rgba(255, 140, 0, 0.8); }
-  }
-  
-  .sun-glow {
-    position: absolute;
-    top: -50px;
-    left: -50px;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
-    animation: glowRotate 10s linear infinite;
-  }
-  
-  @keyframes glowRotate {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  
-  .earth-in-sun-scene {
-    position: relative;
-    width: 80px;
-    height: 80px;
-  }
-  
-  .earth-mini {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #6bb3ff 0%, #4a90e2 40%, #2d5aa0 100%);
-    box-shadow: 0 0 20px rgba(74, 144, 226, 0.5);
-  }
-  
-  .distance-line {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: 0 0;
-  }
-  
-  .chimborazo-sun-line {
-    transform: translate(-50%, -50%) rotate(-20deg);
-  }
-  
-  .everest-sun-line {
-    transform: translate(-50%, -50%) rotate(20deg);
-  }
-  
-  .line-path {
-    width: 300px;
-    height: 2px;
-    background: linear-gradient(90deg, rgba(255, 200, 0, 0.8) 0%, rgba(255, 200, 0, 0.3) 100%);
-    box-shadow: 0 0 10px rgba(255, 200, 0, 0.5);
-    animation: lineDraw 1s ease-out;
-  }
-  
-  .everest-sun-line .line-path {
-    background: linear-gradient(90deg, rgba(100, 150, 255, 0.8) 0%, rgba(100, 150, 255, 0.3) 100%);
-    box-shadow: 0 0 10px rgba(100, 150, 255, 0.5);
-  }
-  
-  @keyframes lineDraw {
-    from { width: 0; }
-    to { width: 300px; }
-  }
-  
-  .line-label {
-    position: absolute;
-    top: -30px;
-    left: 150px;
-    color: #fff;
-    font-size: 14px;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-  }
-  
-  .distance-value {
-    display: block;
-    font-size: 12px;
-    color: #ffd700;
-    margin-top: 5px;
-  }
-  
-  .sun-scene-explanation {
-    margin-top: 50px;
-    text-align: center;
-    color: #fff;
-    max-width: 500px;
-  }
-  
-  .sun-scene-explanation h3 {
-    font-size: 1.5rem;
-    color: #ffd700;
-    margin-bottom: 1rem;
-  }
-  
-  .sun-scene-explanation p {
-    font-size: 1.1rem;
-    line-height: 1.6;
-  }
-  
-  .close-sun-scene {
-    margin-top: 20px;
-    padding: 10px 30px;
-    background: #4a90e2;
-    color: #fff;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background 0.2s;
-  }
-  
-  .close-sun-scene:hover {
-    background: #5ba3f5;
-  }
-  
   /* Main Scene */
   .scene-3d {
     width: 100%;
@@ -582,6 +344,100 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    transform-style: preserve-3d;
+  }
+  
+  /* Sun */
+  .sun {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: 50%;
+    top: 50%;
+    margin-left: -60px;
+    margin-top: -60px;
+    transform: translate3d(350px, -150px, -200px);
+    transform-style: preserve-3d;
+    z-index: 1;
+  }
+  
+  .sun-core {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffeb3b 0%, #ffc107 30%, #ff9800 60%, #ff5722 100%);
+    box-shadow: 
+      0 0 60px rgba(255, 235, 59, 0.9),
+      0 0 120px rgba(255, 193, 7, 0.7),
+      0 0 180px rgba(255, 152, 0, 0.5),
+      inset -20px -20px 40px rgba(255, 87, 34, 0.3);
+    position: relative;
+    animation: sunRotate 20s linear infinite, sunPulse 3s ease-in-out infinite;
+  }
+  
+  .sun-glow {
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    left: -25%;
+    top: -25%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 235, 59, 0.3) 0%, rgba(255, 193, 7, 0.2) 40%, transparent 70%);
+    animation: sunGlow 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  
+  .sun-label {
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+    background: rgba(0, 0, 0, 0.85);
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  @keyframes sunRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  @keyframes sunPulse {
+    0%, 100% { 
+      transform: scale(1);
+      box-shadow: 
+        0 0 60px rgba(255, 235, 59, 0.9),
+        0 0 120px rgba(255, 193, 7, 0.7),
+        0 0 180px rgba(255, 152, 0, 0.5),
+        inset -20px -20px 40px rgba(255, 87, 34, 0.3);
+    }
+    50% { 
+      transform: scale(1.05);
+      box-shadow: 
+        0 0 80px rgba(255, 235, 59, 1),
+        0 0 150px rgba(255, 193, 7, 0.8),
+        0 0 220px rgba(255, 152, 0, 0.6),
+        inset -20px -20px 40px rgba(255, 87, 34, 0.4);
+    }
+  }
+  
+  @keyframes sunGlow {
+    0%, 100% { 
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% { 
+      opacity: 1;
+      transform: scale(1.1);
+    }
   }
   
   .earth {
@@ -604,7 +460,12 @@
       0 0 100px rgba(74, 144, 226, 0.5),
       inset 30px 30px 60px rgba(255, 255, 255, 0.15);
     position: absolute;
-    transform: scaleY(0.98);
+    /* Esferoide oblato: más ancho en el ecuador (scaleX) y más achatado en los polos (scaleY) */
+    /* El aplanamiento real de la Tierra es ~0.00335, pero lo exageramos para visualización educativa */
+    /* scaleX > 1 hace el ecuador más ancho, scaleY < 1 hace los polos más achatados */
+    /* Aumentamos la exageración para que sea más visible al rotar */
+    /* Aumentamos significativamente el abultamiento para que sea visible al rotar */
+    transform: scaleX(1.15) scaleY(0.85);
     animation: earthRotate 20s linear infinite;
   }
   
@@ -663,14 +524,15 @@
   
   .equator-line {
     position: absolute;
-    width: 100%;
-    height: 3px;
+    width: 115%; /* Más ancho para coincidir con el esferoide oblato exagerado */
+    height: 5px;
     top: 50%;
-    left: 0;
-    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.5) 20%, rgba(255, 255, 255, 0.5) 80%, transparent 100%);
+    left: -7.5%; /* Centrar la línea más ancha */
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 200, 0, 0.8) 15%, rgba(255, 200, 0, 0.9) 50%, rgba(255, 200, 0, 0.8) 85%, transparent 100%);
     transform: translateY(-50%);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 20px rgba(255, 200, 0, 0.8), 0 0 40px rgba(255, 200, 0, 0.4);
     animation: equatorPulse 3s ease-in-out infinite;
+    z-index: 5;
   }
   
   @keyframes equatorPulse {
@@ -885,6 +747,7 @@
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     pointer-events: none;
     border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.1s ease-out;
   }
   
   .distance-badge {
@@ -903,6 +766,7 @@
     pointer-events: none;
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.1s ease-out;
   }
   
   .chimborazo-badge {
@@ -919,307 +783,6 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
-  }
-  
-  .comparison-panel {
-    position: absolute;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(20, 20, 30, 0.95);
-    border: 2px solid #4a90e2;
-    border-radius: 16px;
-    padding: 2rem;
-    max-width: 600px;
-    width: 90%;
-    color: #fff;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
-    animation: panelSlide 0.6s ease-out;
-    backdrop-filter: blur(10px);
-  }
-  
-  @keyframes panelSlide {
-    from {
-      opacity: 0;
-      transform: translateX(-50%) translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-  }
-  
-  .comparison-panel h3 {
-    margin: 0 0 1.5rem 0;
-    color: #4a90e2;
-    font-size: 1.4rem;
-    text-align: center;
-    text-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
-  }
-  
-  .volcano-comparison-visual {
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 2rem;
-    margin: 2rem 0;
-    padding: 2rem;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
-  }
-  
-  .comparison-volcano {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-  
-  .comp-volcano-cone {
-    width: 60px;
-    background: linear-gradient(135deg, #8b4513 0%, #654321 100%);
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    border-radius: 0 0 8px 8px;
-    animation: compGrow 1s ease-out;
-    position: relative;
-  }
-  
-  .chimborazo-comp .comp-volcano-cone {
-    filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.6));
-  }
-  
-  .everest-comp .comp-volcano-cone {
-    filter: drop-shadow(0 0 10px rgba(100, 150, 255, 0.6));
-  }
-  
-  @keyframes compGrow {
-    from { height: 0; }
-  }
-  
-  .comp-label {
-    text-align: center;
-    font-size: 12px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-  }
-  
-  .vs-divider {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #4a90e2;
-    text-shadow: 0 0 10px rgba(74, 144, 226, 0.8);
-    align-self: center;
-  }
-  
-  .distance-comparison {
-    margin-top: 1.5rem;
-  }
-  
-  .distance-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.8rem;
-    margin: 0.5rem 0;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    border-left: 3px solid #4a90e2;
-  }
-  
-  .distance-name {
-    color: #ccc;
-  }
-  
-  .distance-number {
-    color: #4a90e2;
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
-  
-  .difference-highlight {
-    margin-top: 1.5rem;
-    padding: 1rem;
-    background: linear-gradient(135deg, rgba(255, 200, 0, 0.2) 0%, rgba(255, 200, 0, 0.1) 100%);
-    border: 2px solid rgba(255, 200, 0, 0.5);
-    border-radius: 12px;
-    text-align: center;
-  }
-  
-  .difference-highlight strong {
-    color: #ffc800;
-    font-size: 1.2rem;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-  
-  .difference-highlight p {
-    color: #aaa;
-    font-size: 0.95rem;
-    margin: 0;
-  }
-  
-  .show-sun-btn {
-    width: 100%;
-    margin-top: 1.5rem;
-    padding: 12px 24px;
-    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
-    color: #000;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
-  }
-  
-  .show-sun-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
-  }
-  
-  .info-card {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(20, 20, 30, 0.95);
-    border: 2px solid #4a90e2;
-    border-radius: 12px;
-    padding: 1.5rem;
-    max-width: 380px;
-    color: #fff;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
-    animation: slideIn 0.4s ease-out;
-    backdrop-filter: blur(10px);
-  }
-  
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  .info-card h3 {
-    margin: 0 0 1rem 0;
-    color: #4a90e2;
-    font-size: 1.3rem;
-  }
-  
-  .info-card p {
-    margin: 0.5rem 0;
-    line-height: 1.6;
-    color: #ccc;
-  }
-  
-  .info-card .explanation {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    font-style: italic;
-    color: #aaa;
-    font-size: 0.95rem;
-  }
-  
-  .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 28px;
-    cursor: pointer;
-    width: 35px;
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background 0.2s;
-  }
-  
-  .close-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-  
-  .educational-banner {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(20, 20, 30, 0.95);
-    border: 2px solid #4a90e2;
-    border-radius: 16px;
-    padding: 1.5rem;
-    max-width: 700px;
-    width: 90%;
-    color: #fff;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.8);
-    animation: bannerSlide 0.6s ease-out;
-    z-index: 100;
-    backdrop-filter: blur(10px);
-  }
-  
-  @keyframes bannerSlide {
-    from {
-      opacity: 0;
-      transform: translateX(-50%) translateY(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-  }
-  
-  .banner-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: #fff;
-    font-size: 24px;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background 0.2s;
-  }
-  
-  .banner-close-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-  }
-  
-  .educational-banner h2 {
-    margin: 0 0 0.8rem 0;
-    color: #4a90e2;
-    font-size: 1.5rem;
-    text-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
-  }
-  
-  .educational-banner p {
-    margin: 0.5rem 0;
-    line-height: 1.7;
-    color: #ccc;
-    font-size: 1rem;
-  }
-  
-  .banner-hint {
-    margin-top: 1rem;
-    padding: 0.8rem;
-    background: rgba(74, 144, 226, 0.2);
-    border-left: 3px solid #4a90e2;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    color: #fff;
   }
   
   .instructions {
@@ -1241,27 +804,6 @@
     .earth {
       width: 300px;
       height: 300px;
-    }
-    
-    .info-card, .comparison-panel, .educational-banner {
-      top: 10px;
-      right: 10px;
-      left: 10px;
-      max-width: none;
-      transform: none;
-    }
-    
-    .comparison-panel {
-      bottom: 60px;
-    }
-    
-    .volcano-comparison-visual {
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .vs-divider {
-      transform: rotate(90deg);
     }
     
     .instructions {

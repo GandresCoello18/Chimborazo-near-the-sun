@@ -1,0 +1,36 @@
+/* Global Styles for Landing Page */
+
+@import '../lib/styles/variables.css';
+@import '../lib/styles/components.css';
+@import '../lib/styles/animations.css';
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  overflow-x: hidden;
+}
+
+/* Smooth transitions */
+section {
+  transition: opacity var(--transition-base);
+}
+
+/* Selection color */
+::selection {
+  background: rgba(74, 144, 226, 0.3);
+  color: var(--color-text-primary);
+}
+
