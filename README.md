@@ -1,3 +1,5 @@
+<img width="1894" height="917" alt="Captura de pantalla 2025-12-18 170555" src="https://github.com/user-attachments/assets/26397abd-2203-477d-91e9-233d598e154d" />
+
 # Chimborazo: El punto más cercano al Sol
 
 Un proyecto educativo interactivo que explica por qué el volcán Chimborazo (Ecuador) está más cerca del Sol que el Monte Everest, a pesar de ser más bajo.
