@@ -79,12 +79,24 @@ npm run build
 npm run preview
 ```
 
-## 📝 Notas
+## Autores ✒️
 
-- Las imágenes del hero deben colocarse en `public/images/`
-- Las imágenes personales deben colocarse en `public/images/personal/`
-- El proyecto usa CSS 3D para máxima compatibilidad (sin WebGL)
+- **Andrés Coello Goyes** - _SOFTWARE ENGINEER_ - [Andres Coello](https://linktr.ee/gandrescoello)
 
-## 📄 Licencia
+#### 🔗 Links
 
-Este proyecto es de código abierto y está disponible para uso educativo.
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://andres-coello-goyes.vercel.app/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/andrescoellogoyes/)
+[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://x.com/acoellogoyes)
+
+## Expresiones de Gratitud 🎁
+
+- Pasate por mi perfil para ver algun otro proyecto 📢
+- Desarrollemos alguna app juntos, puedes escribirme en mis redes.
+- Muchas gracias por pasarte por este proyecto 🤓.
+
+---
+
+⌨️ con ❤️ por [Andres Coello Goyes](https://linktr.ee/gandrescoello) 😊
+
+<img width="400" height="400" alt="1764558900283" src="https://github.com/user-attachments/assets/cde88968-7856-49ec-bdb1-53a82bf9caa3" />
