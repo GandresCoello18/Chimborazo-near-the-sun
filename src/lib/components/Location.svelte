@@ -18,7 +18,12 @@
             />
             <!-- Ecuador highlight -->
             <circle cx="200" cy="200" r="25" fill="#ffc800" opacity="0.8" class="ecuador-marker">
-              <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite" />
+              <animate
+                attributeName="opacity"
+                values="0.8;1;0.8"
+                dur="2s"
+                repeatCount="indefinite"
+              />
             </circle>
             <!-- Andes line -->
             <path
@@ -30,20 +35,29 @@
               opacity="0.6"
             />
             <!-- Labels -->
-            <text x="200" y="195" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold">Ecuador</text>
-            <text x="200" y="175" text-anchor="middle" fill="#ffc800" font-size="10" font-weight="bold">Chimborazo</text>
+            <text x="200" y="195" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold"
+              >Ecuador</text
+            >
+            <text
+              x="200"
+              y="175"
+              text-anchor="middle"
+              fill="#ffc800"
+              font-size="10"
+              font-weight="bold">Chimborazo</text
+            >
           </svg>
         </div>
       </div>
       <div class="text-content">
         <h2 class="section-title">En el corazón de los Andes</h2>
         <p class="section-text">
-          Chimborazo se encuentra en <strong>Ecuador</strong>, formando parte de la majestuosa 
+          Chimborazo se encuentra en <strong>Ecuador</strong>, formando parte de la majestuosa
           <strong>Cordillera de los Andes</strong>, la cadena montañosa más larga del mundo.
         </p>
         <p class="section-text">
-          Su ubicación cerca del <strong>ecuador</strong> es clave para entender por qué está 
-          más cerca del Sol que cualquier otra montaña.
+          Su ubicación cerca del <strong>ecuador</strong> es clave para entender por qué está más cerca
+          del Sol que cualquier otra montaña.
         </p>
         <div class="location-facts">
           <div class="fact-item">
@@ -69,37 +83,37 @@
   .section-location {
     background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
   }
-  
+
   .section-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-2xl);
     align-items: center;
   }
-  
+
   .map-container {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
   }
-  
+
   .south-america-map {
     width: 100%;
     height: auto;
     filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
   }
-  
+
   .ecuador-marker {
     filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.8));
   }
-  
+
   .location-facts {
     margin-top: 2rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .fact-item {
     display: flex;
     align-items: center;
@@ -109,25 +123,24 @@
     border-radius: var(--radius-sm);
     border-left: 4px solid var(--color-primary);
   }
-  
+
   .fact-icon {
     font-size: 1.5rem;
   }
-  
+
   .fact-text {
     font-size: 1rem;
     color: var(--color-text-secondary);
     font-weight: var(--font-weight-medium);
   }
-  
+
   @media (max-width: 768px) {
     .section-content {
       grid-template-columns: 1fr;
     }
-    
+
     .visual-content {
       order: -1;
     }
   }
 </style>
-

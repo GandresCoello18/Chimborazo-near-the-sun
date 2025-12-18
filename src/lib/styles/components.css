@@ -75,7 +75,11 @@
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-darker) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark) 0%,
+    var(--color-primary-darker) 100%
+  );
   transform: translateY(-2px);
   box-shadow: var(--shadow-primary-hover);
 }
@@ -89,14 +93,13 @@
   .section {
     padding: 4rem 1.5rem;
   }
-  
+
   .container {
     padding: 0 var(--spacing-sm);
   }
-  
+
   .btn {
     padding: 0.9rem 2rem;
     font-size: 1rem;
   }
 }
-

@@ -13,8 +13,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["svelte"]
   },
-  "include": ["src"]
+  "include": ["src", "src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte"]
 }
 

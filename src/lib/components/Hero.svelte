@@ -1,35 +1,35 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  
+
   let currentImageIndex = 0;
   let imageElement: HTMLDivElement;
- 
+
   const heroImages = [
     'https://images.unsplash.com/photo-1708502784969-edecf4cdfdff', // Montaña/volcán
     'https://images.unsplash.com/photo-1694371390016-4e63941aec13', // Paisaje montañoso
     'https://images.unsplash.com/photo-1649286184088-0b99e8afd509', // Montañas con cielo
     'https://images.unsplash.com/photo-1578580896025-a6ab6881d54f',
-    'https://images.unsplash.com/photo-1708502784728-f6598b33bfaa'
+    'https://images.unsplash.com/photo-1708502784728-f6598b33bfaa',
   ];
-  
+
   // Alternativa: Usar imágenes locales (descomenta y ajusta las rutas)
   // const heroImages = [
   //   '/images/chimborazo-1.jpg',
   //   '/images/chimborazo-2.jpg',
   //   '/images/chimborazo-3.jpg',
   // ];
-  
+
   function scrollToNext() {
     const nextSection = document.querySelector('.section-about');
     nextSection?.scrollIntoView({ behavior: 'smooth' });
   }
-  
+
   onMount(() => {
     // Cambiar imagen cada 5 segundos
     const interval = setInterval(() => {
       currentImageIndex = (currentImageIndex + 1) % heroImages.length;
     }, 5000);
-    
+
     return () => clearInterval(interval);
   });
 </script>
@@ -37,17 +37,17 @@
 <section class="hero">
   <div class="hero-background" bind:this={imageElement}>
     {#each heroImages as image, index}
-      <div 
-        class="hero-bg-image" 
+      <div
+        class="hero-bg-image"
         class:active={index === currentImageIndex}
         style="background-image: url('{image}');"
         role="img"
-        aria-label="Imagen del Chimborazo">
-      </div>
+        aria-label="Imagen del Chimborazo"
+      ></div>
     {/each}
     <div class="hero-overlay"></div>
   </div>
-  
+
   <div class="hero-content">
     <h1 class="hero-title">Chimborazo: El punto más cercano al Sol</h1>
     <p class="hero-subtitle">
@@ -71,7 +71,7 @@
     position: relative;
     overflow: hidden;
   }
-  
+
   .hero-background {
     position: absolute;
     top: 0;
@@ -80,7 +80,7 @@
     height: 100%;
     z-index: 0;
   }
-  
+
   .hero-bg-image {
     position: absolute;
     top: 0;
@@ -93,11 +93,11 @@
     opacity: 0;
     transition: opacity 1.5s ease-in-out;
   }
-  
+
   .hero-bg-image.active {
     opacity: 1;
   }
-  
+
   .hero-overlay {
     position: absolute;
     top: 0;
@@ -112,7 +112,7 @@
     );
     z-index: 1;
   }
-  
+
   .hero-content {
     position: relative;
     z-index: 2;
@@ -123,7 +123,7 @@
     animation: fadeInUp 1s ease-out;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   }
-  
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -134,7 +134,7 @@
       transform: translateY(0);
     }
   }
-  
+
   .hero-title {
     font-size: clamp(2.5rem, 8vw, 4.5rem);
     font-weight: 800;
@@ -142,7 +142,7 @@
     line-height: 1.2;
     text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   }
-  
+
   .hero-subtitle {
     font-size: clamp(1.1rem, 3vw, 1.5rem);
     margin-bottom: 3rem;
@@ -150,7 +150,7 @@
     opacity: 0.95;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   }
-  
+
   .hero-cta {
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
@@ -167,32 +167,37 @@
     gap: 0.5rem;
     text-shadow: none;
   }
-  
+
   .hero-cta:hover {
     background: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   }
-  
+
   .arrow {
     display: inline-block;
     animation: bounce 2s ease-in-out infinite;
   }
-  
+
   @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(5px); }
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(5px);
+    }
   }
-  
+
   @media (max-width: 768px) {
     .hero-content {
       padding: 1rem;
     }
-    
+
     .hero-title {
       margin-bottom: 1rem;
     }
-    
+
     .hero-subtitle {
       margin-bottom: 2rem;
     }

@@ -11,7 +11,7 @@
   import Footer from './lib/components/Footer.svelte';
   import { initScrollReveal } from './lib/utils/scrollReveal';
   import './styles/global.css';
-  
+
   onMount(() => {
     initScrollReveal();
   });
@@ -35,5 +35,3 @@
     min-height: 100vh;
   }
 </style>
-
-

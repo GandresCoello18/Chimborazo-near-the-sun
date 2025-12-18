@@ -1,7 +1,7 @@
 <script lang="ts">
   export let text: string;
   export let targetSelector: string;
-  
+
   function scrollToNext() {
     const nextSection = document.querySelector(targetSelector);
     if (nextSection) {
@@ -42,7 +42,11 @@
   }
 
   .cta-button:hover {
-    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-darker) 100%);
+    background: linear-gradient(
+      135deg,
+      var(--color-primary-dark) 0%,
+      var(--color-primary-darker) 100%
+    );
     transform: translateY(-2px);
     box-shadow: var(--shadow-primary-hover);
   }
@@ -63,4 +67,3 @@
     }
   }
 </style>
-

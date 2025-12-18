@@ -1,4 +1,4 @@
-import { EARTH_RADIUS_EQUATORIAL, EARTH_RADIUS_POLAR, VISUAL_EARTH_RADIUS, VISUAL_FLATTENING } from './constants';
+import { EARTH_RADIUS_EQUATORIAL, VISUAL_EARTH_RADIUS, VISUAL_FLATTENING } from './constants';
 import type { Vector3 } from 'three';
 
 /**
@@ -18,9 +18,8 @@ export function latLonToVector3(
   const theta = (lon + 180) * (Math.PI / 180); // longitude (0 to 2π)
 
   // Calculate radius at this latitude (oblate spheroid)
-  const cosLat = Math.cos(lat * (Math.PI / 180));
   const sinLat = Math.sin(lat * (Math.PI / 180));
-  
+
   // Simplified oblate spheroid radius calculation
   const r = radius * (1 - VISUAL_FLATTENING * sinLat * sinLat);
 
@@ -41,6 +40,5 @@ export function heightToRadiusOffset(heightMeters: number): number {
   // Convert meters to km, then normalize to our visual scale
   const heightKm = heightMeters / 1000;
   // Earth radius is ~6378 km, so we scale proportionally
-  return 1 + (heightKm / EARTH_RADIUS_EQUATORIAL);
+  return 1 + heightKm / EARTH_RADIUS_EQUATORIAL;
 }
-

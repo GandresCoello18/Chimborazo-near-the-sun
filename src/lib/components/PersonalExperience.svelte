@@ -1,37 +1,37 @@
 <script lang="ts">
   import SectionCTA from './SectionCTA.svelte';
-  
+
   const experiences = [
     {
       video: '/videos/personal/chimborazo-01.mp4',
       text: 'Cada mañana me recuerda la grandeza de este volcán. Ver cómo la luz del sol toca su cumbre nevada es un espectáculo que nunca deja de asombrarme.',
-      timeOfDay: 'Mediodía'
+      timeOfDay: 'Mediodía',
     },
     {
       video: '/videos/personal/chimborazo-02.mp4',
       text: 'La majestuosidad del Chimborazo se siente diferente en cada momento del día. Esta vista desde un viaje es un recordatorio constante de lo afortunado que soy.',
-      timeOfDay: 'Mediodía'
+      timeOfDay: 'Mediodía',
     },
     {
       video: '/videos/personal/chimborazo-03.mp4',
       text: 'Al caer la tarde, las sombras juegan con las montañas creando un paisaje que parece sacado de un sueño. El Chimborazo domina el horizonte con su presencia imponente.',
-      timeOfDay: 'Atardecer'
+      timeOfDay: 'Atardecer',
     },
     {
       video: '/videos/personal/chimborazo-04.mp4',
       text: 'Vivir cerca del Chimborazo no es solo tener una montaña cerca. Es tener un recordatorio diario de la belleza, la fuerza y la inmensidad de la naturaleza.',
-      timeOfDay: 'Mediodía'
+      timeOfDay: 'Mediodía',
     },
     {
       video: '/videos/personal/chimborazo-05.mp4',
       text: 'Durante un viaje cotidiano, se vuevlve a ver el Chimborazo con un paisaje verde y animales de ganados disfrutando de la vista.',
-      timeOfDay: 'Tarde'
+      timeOfDay: 'Tarde',
     },
     {
       video: '/videos/personal/chimborazo-06.mp4',
       text: 'Una mañana despejada con un cielo azul intenso, se aprecia el volvan desde otro angulo pero con la misma impresion de su magnitud.',
-      timeOfDay: 'Tarde'
-    }
+      timeOfDay: 'Tarde',
+    },
   ];
 </script>
 
@@ -40,8 +40,8 @@
     <div class="personal-header">
       <h2 class="section-title centered">Mi experiencia con el Chimborazo</h2>
       <p class="personal-intro">
-        Vivir cerca de esta maravilla natural ha sido una de las mayores bendiciones de mi vida. 
-        Cada día, desde diferentes ángulos y en distintas horas, el Chimborazo me recuerda la 
+        Vivir cerca de esta maravilla natural ha sido una de las mayores bendiciones de mi vida.
+        Cada día, desde diferentes ángulos y en distintas horas, el Chimborazo me recuerda la
         inmensidad del mundo y mi lugar en él.
       </p>
     </div>
@@ -50,7 +50,7 @@
       {#each experiences as experience, index}
         <div class="experience-card" style="animation-delay: {index * 0.1}s">
           <div class="video-container">
-            <video 
+            <video
               src={experience.video}
               autoplay
               loop
@@ -71,7 +71,9 @@
 
     <div class="personal-closing">
       <p class="closing-text">
-        El Chimborazo no es solo una montaña para mí. Es mi conpañero de trabajo, al salir de compras, al caminar por la ciudad, al visitar el campo, siempre me recuerda lo especial que es este lugar con sus areas verdes y sus animales.
+        El Chimborazo no es solo una montaña para mí. Es mi conpañero de trabajo, al salir de
+        compras, al caminar por la ciudad, al visitar el campo, siempre me recuerda lo especial que
+        es este lugar con sus areas verdes y sus animales.
       </p>
     </div>
     <SectionCTA text="Entender la paradoja" targetSelector=".section-question" />
@@ -264,4 +266,3 @@
     }
   }
 </style>
-
