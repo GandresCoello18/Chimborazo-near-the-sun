@@ -3,7 +3,6 @@
   import { SEO_CONFIG } from '../config/seo';
   import { getAbsoluteUrl } from '../config/seo';
 
-  // Datos estructurados para SEO (JSON-LD)
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -12,13 +11,13 @@
     description: SEO_CONFIG.description,
     author: {
       '@type': 'Person',
-      name: SEO_CONFIG.author
+      name: SEO_CONFIG.author,
     },
     inLanguage: 'es-ES',
     potentialAction: {
       '@type': 'ReadAction',
-      target: SEO_CONFIG.siteUrl
-    }
+      target: SEO_CONFIG.siteUrl,
+    },
   };
 
   const articleStructuredData = {
@@ -29,17 +28,17 @@
     image: getAbsoluteUrl(SEO_CONFIG.ogImage),
     author: {
       '@type': 'Person',
-      name: SEO_CONFIG.author
+      name: SEO_CONFIG.author,
     },
     publisher: {
       '@type': 'Organization',
-      name: SEO_CONFIG.siteName
+      name: SEO_CONFIG.siteName,
     },
     datePublished: '2024-01-01',
     dateModified: new Date().toISOString().split('T')[0],
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': SEO_CONFIG.siteUrl
+      '@id': SEO_CONFIG.siteUrl,
     },
     about: {
       '@type': 'Place',
@@ -47,18 +46,17 @@
       geo: {
         '@type': 'GeoCoordinates',
         latitude: -1.4692,
-        longitude: -78.8175
+        longitude: -78.8175,
       },
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'Chimborazo',
-        addressCountry: 'EC'
-      }
-    }
+        addressCountry: 'EC',
+      },
+    },
   };
 
   onMount(() => {
-    // Insertar datos estructurados en el head
     const script1 = document.createElement('script');
     script1.type = 'application/ld+json';
     script1.textContent = JSON.stringify(structuredData);
@@ -70,4 +68,3 @@
     document.head.appendChild(script2);
   });
 </script>
-

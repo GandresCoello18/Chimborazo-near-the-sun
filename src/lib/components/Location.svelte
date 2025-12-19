@@ -1,5 +1,6 @@
 <script lang="ts">
   import SectionCTA from './SectionCTA.svelte';
+  import '../styles/components/location.css';
 </script>
 
 <section class="section-location section">
@@ -74,69 +75,3 @@
     <SectionCTA text="Descubre por qué es especial" targetSelector=".section-why" />
   </div>
 </section>
-
-<style>
-  .section-location {
-    background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-  }
-
-  .section-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-2xl);
-    align-items: center;
-  }
-
-  .map-container {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-  }
-
-  .south-america-map {
-    width: 100%;
-    height: auto;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
-  }
-
-  .ecuador-marker {
-    filter: drop-shadow(0 0 10px rgba(255, 200, 0, 0.8));
-  }
-
-  .location-facts {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .fact-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm);
-    background: rgba(74, 144, 226, 0.1);
-    border-radius: var(--radius-sm);
-    border-left: 4px solid var(--color-primary);
-  }
-
-  .fact-icon {
-    font-size: 1.5rem;
-  }
-
-  .fact-text {
-    font-size: 1rem;
-    color: var(--color-text-secondary);
-    font-weight: var(--font-weight-medium);
-  }
-
-  @media (max-width: 768px) {
-    .section-content {
-      grid-template-columns: 1fr;
-    }
-
-    .visual-content {
-      order: -1;
-    }
-  }
-</style>

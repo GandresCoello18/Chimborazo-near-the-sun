@@ -1,0 +1,171 @@
+.section-conclusion {
+  background: linear-gradient(180deg, #ffffff 0%, #f7fafc 100%);
+}
+
+.conclusion-content {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.answer-box {
+  margin: 3rem 0;
+}
+
+.answer-visual {
+  margin-bottom: 3rem;
+}
+
+.comparison-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding: 2rem;
+  background: rgba(74, 144, 226, 0.05);
+  border-radius: 20px;
+}
+
+.comparison-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.mountain-icon {
+  font-size: 4rem;
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+}
+
+.chimborazo-icon {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.mountain-info {
+  text-align: center;
+}
+
+.mountain-info h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 0.5rem;
+}
+
+.mountain-height {
+  font-size: 1rem;
+  color: #4a5568;
+  margin-bottom: 0.3rem;
+}
+
+.mountain-distance {
+  font-size: 0.9rem;
+  color: #718096;
+  margin-bottom: 0.5rem;
+}
+
+.mountain-result {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: rgba(74, 144, 226, 0.1);
+  color: #2d3748;
+}
+
+.mountain-result.highlight {
+  background: rgba(255, 200, 0, 0.2);
+  color: #b8860b;
+  border: 2px solid #ffc800;
+}
+
+.vs-divider {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #4a90e2;
+  padding: 0 1rem;
+}
+
+.answer-text {
+  background: rgba(74, 144, 226, 0.05);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border-left: 4px solid #4a90e2;
+}
+
+.conclusion-text {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.8;
+  color: #2d3748;
+  margin-bottom: 1.5rem;
+}
+
+.conclusion-text strong {
+  color: #1a1a2e;
+  font-weight: 700;
+}
+
+.takeaway-box {
+  margin-top: 3rem;
+  background: linear-gradient(135deg, rgba(255, 200, 0, 0.1) 0%, rgba(255, 200, 0, 0.05) 100%);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 2px solid rgba(255, 200, 0, 0.3);
+}
+
+.takeaway-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.takeaway-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.takeaway-list li {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #2d3748;
+  border-left: 4px solid #ffc800;
+}
+
+@media (max-width: 768px) {
+  .comparison-visual {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .vs-divider {
+    transform: rotate(90deg);
+  }
+
+  .answer-text {
+    padding: 1.5rem;
+  }
+
+  .takeaway-box {
+    padding: 1.5rem;
+  }
+}
