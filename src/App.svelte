@@ -9,6 +9,7 @@
   import InteractiveDemo from './lib/components/InteractiveDemo.svelte';
   import Conclusion from './lib/components/Conclusion.svelte';
   import Footer from './lib/components/Footer.svelte';
+  import StructuredData from './lib/components/StructuredData.svelte';
   import { initScrollReveal } from './lib/utils/scrollReveal';
   import './styles/global.css';
 
@@ -16,6 +17,8 @@
     initScrollReveal();
   });
 </script>
+
+<StructuredData />
 
 <main>
   <Hero />

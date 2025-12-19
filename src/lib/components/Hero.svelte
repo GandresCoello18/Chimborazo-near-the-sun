@@ -5,19 +5,12 @@
   let imageElement: HTMLDivElement;
 
   const heroImages = [
-    'https://images.unsplash.com/photo-1708502784969-edecf4cdfdff', // Montaña/volcán
-    'https://images.unsplash.com/photo-1694371390016-4e63941aec13', // Paisaje montañoso
-    'https://images.unsplash.com/photo-1649286184088-0b99e8afd509', // Montañas con cielo
-    'https://images.unsplash.com/photo-1578580896025-a6ab6881d54f',
-    'https://images.unsplash.com/photo-1708502784728-f6598b33bfaa',
+    '/images/chimborazo-01.jpg',
+    '/images/chimborazo-02.jpg',
+    '/images/chimborazo-03.jpg',
+    '/images/chimborazo-04.jpg',
+    '/images/chimborazo-05.jpg',
   ];
-
-  // Alternativa: Usar imágenes locales (descomenta y ajusta las rutas)
-  // const heroImages = [
-  //   '/images/chimborazo-1.jpg',
-  //   '/images/chimborazo-2.jpg',
-  //   '/images/chimborazo-3.jpg',
-  // ];
 
   function scrollToNext() {
     const nextSection = document.querySelector('.section-about');
@@ -25,7 +18,6 @@
   }
 
   onMount(() => {
-    // Cambiar imagen cada 5 segundos
     const interval = setInterval(() => {
       currentImageIndex = (currentImageIndex + 1) % heroImages.length;
     }, 5000);

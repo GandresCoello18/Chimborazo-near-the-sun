@@ -8,7 +8,6 @@
       <div class="visual-content">
         <div class="map-container">
           <svg viewBox="0 0 400 500" class="south-america-map">
-            <!-- South America outline -->
             <path
               d="M 100 50 L 150 80 L 180 120 L 200 180 L 220 250 L 250 320 L 280 380 L 300 420 L 320 450 L 350 480 L 380 490 L 390 480 L 380 450 L 360 400 L 340 350 L 320 300 L 300 250 L 280 200 L 250 150 L 220 120 L 180 100 L 150 80 L 120 60 L 100 50 Z"
               fill="#4a90e2"
@@ -16,7 +15,6 @@
               stroke="#2d5aa0"
               stroke-width="2"
             />
-            <!-- Ecuador highlight -->
             <circle cx="200" cy="200" r="25" fill="#ffc800" opacity="0.8" class="ecuador-marker">
               <animate
                 attributeName="opacity"
@@ -25,7 +23,6 @@
                 repeatCount="indefinite"
               />
             </circle>
-            <!-- Andes line -->
             <path
               d="M 150 100 Q 180 150 200 200 Q 220 250 250 300"
               fill="none"
@@ -34,7 +31,6 @@
               stroke-dasharray="5,5"
               opacity="0.6"
             />
-            <!-- Labels -->
             <text x="200" y="195" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold"
               >Ecuador</text
             >

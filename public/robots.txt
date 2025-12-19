@@ -1,0 +1,8 @@
+# robots.txt para Chimborazo Education
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://chimborazo-education.vercel.app/sitemap.xml
+

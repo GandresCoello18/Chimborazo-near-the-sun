@@ -81,6 +81,10 @@ npm run build
 npm run preview
 ```
 
+## 🔍 SEO y Open Graph
+
+El proyecto incluye configuración completa de SEO y Open Graph para mejorar la visibilidad en motores de búsqueda y redes sociales. Ver [docs/SEO.md](docs/SEO.md) para más detalles sobre cómo actualizar las URLs cuando despliegues el sitio.
+
 ## Autores ✒️
 
 - **Andrés Coello Goyes** - _SOFTWARE ENGINEER_ - [Andres Coello](https://linktr.ee/gandrescoello)
