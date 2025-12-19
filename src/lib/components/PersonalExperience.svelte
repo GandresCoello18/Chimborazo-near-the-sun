@@ -9,9 +9,9 @@
     <div class="personal-header">
       <h2 class="section-title centered">Mi experiencia con el Chimborazo</h2>
       <p class="personal-intro">
-        Vivir cerca de esta maravilla natural ha sido una de las mayores bendiciones de mi vida.
-        Cada día, desde diferentes ángulos y en distintas horas, el Chimborazo me recuerda la
-        inmensidad del mundo y mi lugar en él.
+        Vivir cerca de esta maravilla natural me llena de felicidad, soy una persona que le gusta
+        las cosas sencillas y lo natural y verde del campo, lugar donde es tranquilo y rodeado de
+        animales.
       </p>
     </div>
 

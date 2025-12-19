@@ -17,4 +17,3 @@ export function calculateDistanceDifference(): string {
   const everestDistance = getDistanceFromCenter(EVEREST.lat, EVEREST.height);
   return ((chimborazoDistance - everestDistance) * 1000).toFixed(0);
 }
-

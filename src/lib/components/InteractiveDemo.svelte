@@ -6,7 +6,7 @@
 <section class="section-demo section">
   <div class="container">
     <div class="demo-header">
-      <h2 class="section-title centered">Explora la Tierra en 3D</h2>
+      <h2 class="section-title centered" style="color: #fff">Explora la Tierra en 3D</h2>
       <p class="demo-intro">
         Interactúa con esta visualización para ver cómo la forma de la Tierra afecta la distancia
         desde el centro hasta cada montaña.

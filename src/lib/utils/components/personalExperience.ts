@@ -1,7 +1,3 @@
-/**
- * Datos y lógica del componente PersonalExperience
- */
-
 export interface Experience {
   video: string;
   text: string;
@@ -11,22 +7,22 @@ export interface Experience {
 export const EXPERIENCES: Experience[] = [
   {
     video: '/videos/personal/chimborazo-01.mp4',
-    text: 'Cada mañana me recuerda la grandeza de este volcán. Ver cómo la luz del sol toca su cumbre nevada es un espectáculo que nunca deja de asombrarme.',
+    text: 'Me gusta cuando amanece despejado. Ver cómo la luz del sol toca su cumbre nevada es un espectáculo que nunca deja de asombrarme.',
     timeOfDay: 'Mediodía',
   },
   {
     video: '/videos/personal/chimborazo-02.mp4',
-    text: 'La majestuosidad del Chimborazo se siente diferente en cada momento del día. Esta vista desde un viaje es un recordatorio constante de lo afortunado que soy.',
+    text: 'La majestuosidad del Chimborazo se siente diferente en cada momento del día. Esta vista desde un viaje en auto me llena de felicidad.',
     timeOfDay: 'Mediodía',
   },
   {
     video: '/videos/personal/chimborazo-03.mp4',
-    text: 'Al caer la tarde, las sombras juegan con las montañas creando un paisaje que parece sacado de un sueño. El Chimborazo domina el horizonte con su presencia imponente.',
+    text: 'Cuando caer la tarde, el cielo y el panorama cambia para bien, en ocaciones se pone oscuro y en otras se pone naranja pero los 2 me gusta ',
     timeOfDay: 'Atardecer',
   },
   {
     video: '/videos/personal/chimborazo-04.mp4',
-    text: 'Vivir cerca del Chimborazo no es solo tener una montaña cerca. Es tener un recordatorio diario de la belleza, la fuerza y la inmensidad de la naturaleza.',
+    text: 'Sigo pensando en lo afortunado que son las personas que viven cerca de este impresionante lugar, con su vista impecable.',
     timeOfDay: 'Mediodía',
   },
   {
@@ -40,4 +36,3 @@ export const EXPERIENCES: Experience[] = [
     timeOfDay: 'Tarde',
   },
 ];
-

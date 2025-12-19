@@ -26,4 +26,3 @@ export function createImageCarousel(
     // Función de limpieza vacía
   };
 }
-

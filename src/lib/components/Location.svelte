@@ -32,16 +32,11 @@
               stroke-dasharray="5,5"
               opacity="0.6"
             />
-            <text x="200" y="195" text-anchor="middle" fill="#fff" font-size="12" font-weight="bold"
+            <text x="200" y="195" text-anchor="middle" fill="#000" font-size="12" font-weight="bold"
               >Ecuador</text
             >
-            <text
-              x="200"
-              y="175"
-              text-anchor="middle"
-              fill="#ffc800"
-              font-size="10"
-              font-weight="bold">Chimborazo</text
+            <text x="200" y="175" text-anchor="middle" fill="#000" font-size="10" font-weight="bold"
+              >Chimborazo</text
             >
           </svg>
         </div>
@@ -49,12 +44,12 @@
       <div class="text-content">
         <h2 class="section-title">En el corazón de los Andes</h2>
         <p class="section-text">
-          Chimborazo se encuentra en <strong>Ecuador</strong>, formando parte de la majestuosa
+          El Chimborazo se encuentra en <strong>Ecuador</strong>, formando parte de la majestuosa
           <strong>Cordillera de los Andes</strong>, la cadena montañosa más larga del mundo.
         </p>
         <p class="section-text">
-          Su ubicación cerca del <strong>ecuador</strong> es clave para entender por qué está más cerca
-          del Sol que cualquier otra montaña.
+          Al estar ubicado en el <strong>ecuador</strong> tiene una gran ventaja de estar más cerca del
+          Sol que cualquier otra montaña.
         </p>
         <div class="location-facts">
           <div class="fact-item">

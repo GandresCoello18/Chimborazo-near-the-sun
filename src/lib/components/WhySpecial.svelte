@@ -11,7 +11,7 @@
         <div class="card-icon">🌍</div>
         <h3 class="card-title">Ubicación Ecuatorial</h3>
         <p class="card-text">
-          Está ubicado muy cerca del ecuador, donde la Tierra tiene su mayor diámetro debido al
+          Está ubicado en el ecuador, donde la Tierra tiene su mayor diámetro debido al
           abultamiento.
         </p>
       </div>
@@ -20,8 +20,8 @@
         <div class="card-icon">🔵</div>
         <h3 class="card-title">Forma de la Tierra</h3>
         <p class="card-text">
-          La Tierra no es una esfera perfecta. Tiene un abultamiento en el ecuador que la hace más
-          "gorda" en esa zona.
+          La Tierra no es una esfera o un circulo perfecta. Tiene un abultamiento en el ecuador que
+          la hace más "gorda" en esa zona.
         </p>
       </div>
 
@@ -29,7 +29,7 @@
         <div class="card-icon">🏔️</div>
         <h3 class="card-title">Altura Significativa</h3>
         <p class="card-text">
-          Con 6,263 metros de altura, es uno de los picos más altos de los Andes y del mundo.
+          Con 6,263 metros de altura, es uno de los picos más altos de los Andes pero no del mundo.
         </p>
       </div>
     </div>
